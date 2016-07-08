@@ -14,7 +14,7 @@ class CommentList extends Component {
 
         const { isOpen } = this.state;
         const button = <a href="#" onClick= {this.toggleOpen}> {isOpen ? 'Close comments ' : 'Open comments '} [{comments.length}]</a>;
-
+        //проверка на comments.length лишняя, можете рендерить пустой массив - результат тот же будет
         const listItems = (isOpen && comments.length)? comments.map((comment) => <Comment comment = {comment} key = {comment.id}/>) : null;
 
         return (
