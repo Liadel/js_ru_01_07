@@ -1,10 +1,12 @@
-import React, { Component } from 'react'
+
+import React, { Component, PropTypes } from 'react'
 import CommentList from './CommentList'
 
 class Article extends Component {
-    state = {
-        isOpen: false
-    };
+
+    static propTypes = {
+        article: PropTypes.object.isRequired
+    }
 
 /*
     constructor(props) {
@@ -16,46 +18,17 @@ class Article extends Component {
 */
 
     render() {
-        const article = this.props.article;
-        //console.log(article);
-//        const { article } = this.props
-//    const { article: { title, text } } = props
-        const { isOpen } = this.state;
-        const body = isOpen ? <section>{ article.text }</section> : null;
-        const comments = <CommentList comments = {this.props.article.comments}/> ;
 
-        return (
-            <div>
-                <h1 onClick = {this.toggleOpen}>{ article.title }</h1>
-                {body}
+        const { isOpen, openArticle, article: { title, text, comments } } = this.props
+            const body = isOpen ? <section>{ text } <CommentList comments = {comments} /></section> : null
 
-                {comments}
-            </div>
-
-        )
-    }
-
-    toggleOpen = (ev) => {
-        this.setState({
-            isOpen: !this.state.isOpen
-        })
+            return (
+                <div>
+                    <h1 onClick = {openArticle}>{ title }</h1>
+                    {body}
+                </div>
+            )
     }
 }
-
-
-
-/*
-function Article(props) {
-    const article = props.article
-//    const { article: { title, text } } = props
-
-    return (
-        <div>
-            <h1>{ article.title }</h1>
-            <section>{ article.text }</section>
-        </div>
-    )
-}
-*/
 
 export default Article

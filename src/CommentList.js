@@ -1,39 +1,39 @@
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
 import Comment from './Comment'
-
+import toggleOpen from './decorators/toggleOpen'
 
 class CommentList extends Component {
-    state = {
-        isOpen: false
-    };
-    
-    render() {
-        const comments = this.props.comments;
 
-        if (!comments) return (null);
-
-        const { isOpen } = this.state;
-        const button = <a href="#" onClick= {this.toggleOpen}> {isOpen ? 'Close comments ' : 'Open comments '} [{comments.length}]</a>;
-        //проверка на comments.length лишняя, можете рендерить пустой массив - результат тот же будет
-        const listItems = (isOpen && comments.length)? comments.map((comment) => <Comment comment = {comment} key = {comment.id}/>) : null;
-
-        return (
-            <section>
-                {button}
-                <ul>
-                    {listItems}
-                </ul>
-            </section>
-
-        )
+    componentWillMount() {
+        console.log('---', this.props)
     }
-    toggleOpen = (ev) => {
-        ev.preventDefault;
-        this.setState({
-            isOpen: !this.state.isOpen
-        })
+    componentDidMount() {
+        console.log('---', 'mounted', this.refs.toggler)
+    }
+
+    componentWillReceiveProps(nextProps) {
+        console.log('---', this.props.isOpen, nextProps.isOpen)
+    }
+
+    componentWillUnmount() {
+        console.log('---', 'unmounting')
+    }
+
+    render() {
+        const { comments, isOpen, toggleOpen } = this.props
+        if (!comments || !comments.length) return <h3>no comments yet</h3>
+
+        const commentItems = comments.map(comment => <li key = {comment.id}><Comment comment = {comment}/></li>)
+        const body = isOpen ? <ul>{commentItems}</ul> : null
+        const linkText = isOpen ? 'close comments' : 'show comments'
+        return (
+            <div>
+                <a href="#" onClick = {toggleOpen} ref="toggler">{linkText}</a>
+                {body}
+            </div>
+        )
     }
 }
 
+export default toggleOpen(CommentList)
 
-export default CommentList
