@@ -1,6 +1,7 @@
 import React from 'react'
 
 export default (Component) => class DecoratedComponent extends React.Component {
+  //привязка к статье в названиях плохо - вы же создаете декоратор для переиспользования логики в других местах, почему openArticle, openArticleId?
     state = {
         openArticleId: null
     }
